@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/noohkvm/node-mongo-todo/issues"
   },
-  "homepage": "https://github.com/noohkvm/node-mongo-todo#readme"
+  "homepage": "https://github.com/noohkvm/node-mongo-todo#readme",
+  "dependencies": {
+    "mongodb": "^3.2.2"
+  }
 }

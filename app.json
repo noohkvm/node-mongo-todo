@@ -3,5 +3,8 @@
   "description": "ToDo App with Node.js Mongo",
   "repository": "https://github.com/noohkvm/node-mongo-todo",
   "logo": "https://github.com/noohkvm/node-mongo-todo/logo.png",
-  "keywords": ["node", "mongo", "todo"]
+  "keywords": ["node", "mongo", "todo"],
+  "addons": [
+    "mongolab"
+  ]
 }
