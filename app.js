@@ -1,24 +1,43 @@
 var http = require('http');
-
-const port=process.env.PORT || 3000
-
-
+var express = require("express");
 var MongoClient = require('mongodb').MongoClient;
-var url = process.env.MONGODB_URI || "mongodb://localhost:27017/mydb";
 
-MongoClient.connect(url, function(err, db) {
+const PORT=process.env.PORT || 3000
+var url = process.env.MONGODB_URI || "mongodb://localhost:27017/mydb";
+var TODO_COLLECTION = "todos";
+
+var app = express();
+app.use(bodyParser.json());
+
+var db;
+
+MongoClient.connect(url, function(err, database) {
   if (err) throw err;
-  console.log("Database created!");
-  db.close();
+  db = database.db();
+  var server = app.listen(PORT, function () {
+    var port = server.address().port;
+    console.log("App now running on port", port);
+  });
 });
 
-console.log("Starting server on port ",port);
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
 
-http.createServer(function (req, res) {
-  res.write('Hello World!'+url); //write a response to the client
-  res.end(); //end the response
-}).listen(port);
+app.get("/api/todos", function(req, res) {
+  db.collection(TODO_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contacts.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
 
+app.get("/", function(req, res) {
+  res.status(200).json({name:'sample todo app'});
+});
 
 
 
